@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,7 +48,7 @@ class ProductControllerTest {
         ResponseEntity<?> response = productController.getAllProducts();
 
         // Assert
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockProducts, response.getBody());
         verify(productRepository, times(1)).findAll();
     }
@@ -63,7 +63,7 @@ class ProductControllerTest {
         ResponseEntity<?> response = productController.createProduct(product);
 
         // Assert
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(product, response.getBody());
         verify(productRepository, times(1)).save(product);
     }
@@ -81,7 +81,7 @@ class ProductControllerTest {
         ResponseEntity<Product> response = productController.updateProduct(productId, updatedDetails);
 
         // Assert
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("New Name", response.getBody().getName());
         assertEquals(75.0, response.getBody().getPrice());
         verify(productRepository, times(1)).findById(productId);
@@ -99,7 +99,7 @@ class ProductControllerTest {
         ResponseEntity<Product> response = productController.updateProduct(productId, updatedDetails);
 
         // Assert
-        assertEquals(404, response.getStatusCodeValue());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(productRepository, times(1)).findById(productId);
     }
 
@@ -113,7 +113,7 @@ class ProductControllerTest {
         ResponseEntity<Void> response = productController.deleteProduct(productId);
 
         // Assert
-        assertEquals(204, response.getStatusCodeValue());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(productRepository, times(1)).deleteById(productId);
     }
 
@@ -127,7 +127,7 @@ class ProductControllerTest {
         ResponseEntity<Void> response = productController.deleteProduct(productId);
 
         // Assert
-        assertEquals(404, response.getStatusCodeValue());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(productRepository, times(0)).deleteById(productId);
     }
 
@@ -142,7 +142,7 @@ class ProductControllerTest {
         ResponseEntity<?> response = productController.reduceStock(productId, 5);
 
         // Assert
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Stock updated successfully", response.getBody());
         verify(productRepository, times(1)).save(product);
     }
@@ -158,7 +158,7 @@ class ProductControllerTest {
         ResponseEntity<?> response = productController.reduceStock(productId, 5);
 
         // Assert
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Insufficient stock", response.getBody());
     }
 
@@ -176,7 +176,7 @@ class ProductControllerTest {
         ResponseEntity<Map<String, String>> response = productController.checkout(cartItems);
 
         // Assert
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Compra realizada con éxito", response.getBody().get("message"));
     }
 
@@ -192,7 +192,7 @@ class ProductControllerTest {
         ResponseEntity<Map<String, String>> response = productController.checkout(cartItems);
 
         // Assert
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("No hay suficiente stock para el producto: Product A", response.getBody().get("message"));
     }
 }

@@ -1,6 +1,5 @@
 package com.example.productservice;
 
-import com.example.productservice.CorsConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
